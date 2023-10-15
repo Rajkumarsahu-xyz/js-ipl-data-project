@@ -3,8 +3,6 @@ const csv = require('csv-parser');
 
 function calculateExtraRunsConcededIn2016(matchesFilePath, deliveriesFilePath) {
     let extraRunsConceded = {};
-
-    // Read matches CSV file to filter matches in the year 2016
     let matchesIn2016 = {};
     fs.createReadStream(matchesFilePath)
         .pipe(csv())
@@ -14,7 +12,6 @@ function calculateExtraRunsConcededIn2016(matchesFilePath, deliveriesFilePath) {
             }
         })
         .on('end', () => {
-            // Read deliveries CSV file and calculate extra runs conceded in 2016
             fs.createReadStream(deliveriesFilePath)
                 .pipe(csv())
                 .on('data', (row) => {
@@ -27,7 +24,6 @@ function calculateExtraRunsConcededIn2016(matchesFilePath, deliveriesFilePath) {
                     }
                 })
                 .on('end', () => {
-                    // Write the result to extraRunsConcededIn2016.json
                     fs.writeFileSync('../public/output/3-extraRunsConcededPerTeam2016.json', JSON.stringify(extraRunsConceded, null, 2));
                     console.log('Extra runs conceded per team in 2016 calculated and saved to extraRunsConcededIn2016.json.');
                 });

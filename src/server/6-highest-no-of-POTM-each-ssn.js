@@ -4,8 +4,7 @@ const csv = require('csv-parser');
 function calculateHighestNoOfPOTMEachSsn(matchesFilePath) {
     let highestNoOfPOTMEachSsn = {};
     let potm = {};
-
-    // Read matches CSV file and calculate matches won per team per year
+    
     fs.createReadStream(matchesFilePath)
         .pipe(csv())
         .on('data', (row) => {

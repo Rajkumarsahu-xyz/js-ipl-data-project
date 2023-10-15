@@ -1,34 +1,40 @@
 const fs = require('fs');
-const csv = require('csv-parser');
+const csvParser = require('csv-parser');
 
 function findMostDismissedPlayers(deliveriesFilePath) {
-    let dismissedPlayers = {};
+const dismissalsCount = {};
 
-    // Read deliveries CSV file and find most dismissed players
-    fs.createReadStream(deliveriesFilePath)
-        .pipe(csv())
-        .on('data', (row) => {
-            const batsman = row.batsman;
-            const dismissedPlayer = row.player_dismissed;
+fs.createReadStream(deliveriesFilePath)
+    .pipe(csvParser())
+    .on('data', row => {
+        const bowler = row.bowler;
+        const dismissedBatsman = row.player_dismissed;
 
-            if (dismissedPlayer && batsman !== dismissedPlayer) {
-                const key = `${batsman}-${dismissedPlayer}`;
-                dismissedPlayers[key] = (dismissedPlayers[key] || 0) + 1;
+        if (dismissedBatsman && bowler) {
+            const key = `${bowler}_${dismissedBatsman}`;
+            dismissalsCount[key] = (dismissalsCount[key] || 0) + 1;
+        }
+    })
+    .on('end', () => {
+        let maxDismissals = 0;
+        let maxDismissalsPair = null;
+
+        Object.keys(dismissalsCount).forEach(pair => {
+            const dismissals = dismissalsCount[pair];
+            if (dismissals > maxDismissals) {
+                maxDismissals = dismissals;
+                maxDismissalsPair = pair;
             }
-        })
-        .on('end', () => {
-            // Find the pair of players with the most dismissals
-            const mostDismissedPair = Object.keys(dismissedPlayers).reduce((a, b) => {
-                return dismissedPlayers[a] > dismissedPlayers[b] ? a : b;
-            });
-
-            const [batsman, dismissedPlayer] = mostDismissedPair.split('-');
-            const dismissalCount = dismissedPlayers[mostDismissedPair];
-
-            // Write the result to mostDismissedPlayers.json
-            fs.writeFileSync('../public/output/8-highestNoOfTimesAPlayerDismissedByAnotherPlayer.json', JSON.stringify({ batsman, dismissedPlayer, dismissalCount }, null, 2));
-            console.log('Most dismissed players calculated and saved to mostDismissedPlayers.json.');
         });
+
+        const outputData = {
+            playerPair: maxDismissalsPair,
+            dismissals: maxDismissals,
+        };
+
+        fs.writeFileSync("../public/output/8-highestNoOfTimesAPlayerDismissedByAnotherPlayer.json", JSON.stringify(outputData, null, 2));
+    });
 }
+
 
 module.exports = findMostDismissedPlayers;

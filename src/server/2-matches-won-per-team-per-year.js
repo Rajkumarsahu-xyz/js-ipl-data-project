@@ -3,8 +3,6 @@ const csv = require('csv-parser');
 
 function calculateMatchesWonPerTeamPerYear(matchesFilePath) {
     let matchesWonPerTeamPerYear = {};
-
-    // Read matches CSV file and calculate matches won per team per year
     fs.createReadStream(matchesFilePath)
         .pipe(csv())
         .on('data', (row) => {

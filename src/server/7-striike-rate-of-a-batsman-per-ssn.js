@@ -1,52 +1,49 @@
-const fs = require('fs');
-const csv = require('csv-parser');
+function getStrikeRateBatsman(deliveriesFilePath) {
+let batsmanStrikeRates = {};
 
-function calculateBatsmanStrikeRatePerSeason(deliveriesFilePath) {
-    let batsmanStrikeRatePerSeason = {};
+fs.createReadStream(deliveriesFilePath)
+    .pipe(csvParser())
+    .on('data', row => {
+        const batsman = row.batsman;
+        const season = row.season;
+        const runs = parseInt(row.batsman_runs);
+        const balls = parseInt(row.batsman_runs) + parseInt(row.extras);
 
-    // Read deliveries CSV file and calculate batsman strike rate per season
-    fs.createReadStream(deliveriesFilePath)
-        .pipe(csv())
-        .on('data', (row) => {
-            const season = row.season;
-            const batsman = row.batsman;
-            const runs = parseInt(row.batsman_runs, 10);
-            const balls = parseInt(row.ball, 10); // Each row represents a ball
-
-            if (balls > 0) {
-                if (!batsmanStrikeRatePerSeason[season]) {
-                    batsmanStrikeRatePerSeason[season] = {};
-                }
-
-                if (batsmanStrikeRatePerSeason[season][batsman]) {
-                    batsmanStrikeRatePerSeason[season][batsman].runs += runs;
-                    batsmanStrikeRatePerSeason[season][batsman].balls += 1;
-                } else {
-                    batsmanStrikeRatePerSeason[season][batsman] = {
-                        runs: runs,
-                        balls: 1
-                    };
-                }
+        if (batsman && season && balls > 0) {
+            if (!batsmanStrikeRates[season]) {
+                batsmanStrikeRates[season] = {};
             }
-        })
-        .on('end', () => {
-            // Calculate and store the strike rate for each batsman in each season
-            let result = {};
-            Object.keys(batsmanStrikeRatePerSeason).forEach((season) => {
-                result[season] = {};
-                const batsmen = batsmanStrikeRatePerSeason[season];
-                Object.keys(batsmen).forEach((batsman) => {
-                    const runs = batsmen[batsman].runs;
-                    const balls = batsmen[batsman].balls;
-                    const strikeRate = (runs / balls) * 100;
-                    result[season][batsman] = strikeRate.toFixed(2);
-                });
-            });
 
-            // Write the result to batsmanStrikeRatePerSeason.json
-            fs.writeFileSync('../public/output/7-strikeRateOfABatsmanPerSsn.json', JSON.stringify(result, null, 4));
-            console.log('Batsman strike rate per season calculated and saved to batsmanStrikeRatePerSeason.json.');
+            if (!batsmanStrikeRates[season][batsman]) {
+                batsmanStrikeRates[season][batsman] = { runs: 0, balls: 0 };
+            }
+
+            batsmanStrikeRates[season][batsman].runs += runs;
+            batsmanStrikeRates[season][batsman].balls += balls;
+        }
+    })
+    .on('end', () => {
+        const highestStrikeRates = {};
+
+        Object.keys(batsmanStrikeRates).forEach(season => {
+            highestStrikeRates[season] = { batsman: '', strikeRate: 0 };
+
+            Object.keys(batsmanStrikeRates[season]).forEach(batsman => {
+                const { runs, balls } = batsmanStrikeRates[season][batsman];
+                const strikeRate = (runs / balls) * 100;
+
+                if (strikeRate > highestStrikeRates[season].strikeRate) {
+                    highestStrikeRates[season] = { batsman, strikeRate };
+                }
+            });
         });
+
+        fs.writeFileSync(outputFilePath, JSON.stringify(highestStrikeRates, null, 2));
+
+        console.log('Highest strike rates by batsman for each season:');
+        console.log(highestStrikeRates);
+    });
+
 }
 
-module.exports = calculateBatsmanStrikeRatePerSeason;
+module.exports = { getStrikeRateBatsman };

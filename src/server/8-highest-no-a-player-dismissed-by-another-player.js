@@ -20,15 +20,19 @@ fs.createReadStream(deliveriesFilePath)
         let maxDismissalsPair = null;
 
         Object.keys(dismissalsCount).forEach(pair => {
-            const dismissals = dismissalsCount[pair];
-            if (dismissals > maxDismissals) {
-                maxDismissals = dismissals;
+            if (dismissalsCount[pair] > maxDismissals) {
+                maxDismissals = dismissalsCount[pair];
                 maxDismissalsPair = pair;
             }
         });
 
+        const chars = maxDismissalsPair.split('_');
+        let dismissedPlayer = chars[1];
+        let wicketTaker = chars[0];
+
         const outputData = {
-            playerPair: maxDismissalsPair,
+            dismissedPlayer: dismissedPlayer,
+            wicketTaker: wicketTaker,
             dismissals: maxDismissals,
         };
 
@@ -36,5 +40,6 @@ fs.createReadStream(deliveriesFilePath)
     });
 }
 
+// findMostDismissedPlayers("/home/raj/js-ipl-data-project/src/data/deliveries.csv");
 
 module.exports = findMostDismissedPlayers;

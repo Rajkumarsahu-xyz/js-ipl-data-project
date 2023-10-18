@@ -13,8 +13,13 @@ fs.createReadStream(deliveriesFilePath)
             const bowler = row.bowler;
             const totalRuns = parseInt(row.total_runs);
             const extras = parseInt(row.extra_runs);
-            const runsGiven = totalRuns - extras;
-            const ballsBowled = 1;
+            const wide = parseInt(row.wide_runs);
+            const noball = parseInt(row.noball_runs);
+            const runsGiven = totalRuns - extras + wide + noball;
+            let ballsBowled = 0;
+            if(wide==0 && noball == 0) {
+                ballsBowled = 1;
+            }
 
             if (superOverBowlerEconomy[bowler]) {
                 superOverBowlerEconomy[bowler].runs += runsGiven;
@@ -48,5 +53,7 @@ fs.createReadStream(deliveriesFilePath)
         fs.writeFileSync('../public/output/9-bowlerBestEconomyInSuperOvers.json', JSON.stringify(outputData, null, 2));
     });
 }
+
+// findBestEconomyInSuperOvers("/home/raj/js-ipl-data-project/src/data/deliveries.csv");
 
 module.exports = findBestEconomyInSuperOvers;

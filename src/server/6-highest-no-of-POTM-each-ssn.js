@@ -21,17 +21,20 @@ function calculateHighestNoOfPOTMEachSsn(matchesFilePath) {
                 potm[year] = {
                     [player]: 1
                 };
-                // matchesWonPerTeamPerYear[year][winner] = 1;
             }
             // console.log(potm);
 
             Object.keys(potm).forEach((year) => {
                 const players = potm[year];
-                const topPlayer = Object.keys(players).reduce((a, b) => players[a] > players[b] ? a : b);
-                highestNoOfPOTMEachSsn[year] = {
-                    player: topPlayer,
-                    awards: players[topPlayer]
-                };
+                const topPlayer = Object.entries(players)
+                        .sort((a, b) => b[1] - a[1])
+                        .slice(0, 1);
+                highestNoOfPOTMEachSsn[year] = topPlayer;
+                // const topPlayer = Object.keys(players).reduce((a, b) => players[a] > players[b] ? a : b);
+                // highestNoOfPOTMEachSsn[year] = {
+                //     player: topPlayer,
+                //     awards: players[topPlayer]
+                // };
             });
             // console.log(highestNoOfPOTMEachSsn);
 
@@ -43,5 +46,7 @@ function calculateHighestNoOfPOTMEachSsn(matchesFilePath) {
             console.log('Matches won per team per year data calculated and saved to matchesWonPerTeamPerYear.json.');
         });
 }
+
+// calculateHighestNoOfPOTMEachSsn("/home/raj/js-ipl-data-project/src/data/matches.csv");
 
 module.exports = calculateHighestNoOfPOTMEachSsn;

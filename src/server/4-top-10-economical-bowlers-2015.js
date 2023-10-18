@@ -11,6 +11,7 @@ function calculateTopEconomicalBowlersIn2015(matchesFilePath, deliveriesFilePath
         .on('data', (row) => {
             if (row.season === '2015') {
                 matchesIn2015[row.id] = true;
+                // console.log(matchesIn2015);
             }
         })
         .on('end', () => {
@@ -21,14 +22,17 @@ function calculateTopEconomicalBowlersIn2015(matchesFilePath, deliveriesFilePath
                     if (matchesIn2015[matchId]) {
                         const bowler = row.bowler;
                         const extras = parseInt(row.extra_runs, 10);
-                        const totalRuns = parseInt(row.total_runs, 10) - extras;
+                        const wide = parseInt(row.wide_runs, 10);
+                        const noball = parseInt(row.noball_runs, 10);
+                        const totalRuns = parseInt(row.total_runs, 10) - extras + wide + noball;
                         const isWide = row.wide_runs !== '0';
                         const isNoBall = row.noball_runs !== '0';
                         
                         if (!isWide && !isNoBall) {
-                            totalRunsPerBowler[bowler] = (totalRunsPerBowler[bowler] || 0) + totalRuns;
                             totalBallsPerBowler[bowler] = (totalBallsPerBowler[bowler] || 0) + 1;
                         }
+
+                        totalRunsPerBowler[bowler] = (totalRunsPerBowler[bowler] || 0) + totalRuns;
                     }
                 })
                 .on('end', () => {
@@ -36,8 +40,9 @@ function calculateTopEconomicalBowlersIn2015(matchesFilePath, deliveriesFilePath
                     Object.keys(totalRunsPerBowler).forEach((bowler) => {
                         const runs = totalRunsPerBowler[bowler];
                         const balls = totalBallsPerBowler[bowler];
-                        const economy = (runs / balls) * 6; 
+                        const economy = (runs / balls) * 6;
                         economyRates[bowler] = economy;
+                        // console.log(bowler, economyRates[bowler]);
                     });
 
                     const top10Bowlers = Object.entries(economyRates)
@@ -48,5 +53,7 @@ function calculateTopEconomicalBowlersIn2015(matchesFilePath, deliveriesFilePath
                 });
         });
 }
+
+// calculateTopEconomicalBowlersIn2015("/home/raj/js-ipl-data-project/src/data/matches.csv", "/home/raj/js-ipl-data-project/src/data/deliveries.csv");
 
 module.exports = calculateTopEconomicalBowlersIn2015;

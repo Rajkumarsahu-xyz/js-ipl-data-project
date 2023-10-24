@@ -1,31 +1,23 @@
-const fs = require('fs');
-const csv = require('csv-parser');
+function calculateMatchesWonPerTeamPerYear(matches) {
+  const matchesWonPerTeamPerYear = {};
+  matches.forEach((match) => {
+    const year = match.season;
+    const winner = match.winner;
 
-function calculateMatchesWonPerTeamPerYear(matchesFilePath) {
-    let matchesWonPerTeamPerYear = {};
-    fs.createReadStream(matchesFilePath)
-        .pipe(csv())
-        .on('data', (row) => {
-            const year = row.season;
-            const winner = row.winner;
+    if (matchesWonPerTeamPerYear[year]) {
+      if (matchesWonPerTeamPerYear[year][winner]) {
+        matchesWonPerTeamPerYear[year][winner] += 1;
+      } else {
+        matchesWonPerTeamPerYear[year][winner] = 1;
+      }
+    } else {
+      matchesWonPerTeamPerYear[year] = {
+        [winner]: 1,
+      };
+    }
+  });
 
-            if (matchesWonPerTeamPerYear[year]) {
-                if (matchesWonPerTeamPerYear[year][winner]) {
-                    matchesWonPerTeamPerYear[year][winner] += 1;
-                } else {
-                    matchesWonPerTeamPerYear[year][winner] = 1;
-                }
-            } else {
-                matchesWonPerTeamPerYear[year] = {
-                    [winner]: 1
-                };
-                // matchesWonPerTeamPerYear[year][winner] = 1;
-            }
-        })
-        .on('end', () => {
-            fs.writeFileSync('../public/output/2-matchesWonPerTeamPerYear.json', JSON.stringify(matchesWonPerTeamPerYear, null, 2));
-            console.log('Matches won per team per year data calculated and saved to matchesWonPerTeamPerYear.json.');
-        });
+  return matchesWonPerTeamPerYear;
 }
 
 module.exports = calculateMatchesWonPerTeamPerYear;

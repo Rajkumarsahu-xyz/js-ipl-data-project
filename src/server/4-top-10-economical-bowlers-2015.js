@@ -36,7 +36,7 @@ function calculateTopEconomicalBowlersIn2015(matches, deliveries) {
     const runs = totalRunsPerBowler[bowler];
     const balls = totalBallsPerBowler[bowler];
     const economy = (runs / balls) * 6;
-    economyRates[bowler] = economy;
+    economyRates[bowler] = economy.toFixed(2);
   });
 
   const top10Bowlers = Object.entries(economyRates)

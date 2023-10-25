@@ -513,9 +513,11 @@ const deliveriesTest = [
 ];
 
 const expected = [
-  ['B Kumar', 6],
-  ['Mustafizur Rahman', 11],
+  ['B Kumar', '6.00'],
+  ['Mustafizur Rahman', '11.00'],
 ];
+
+
 
 test('Returns the top 10 economical bowlers in 2015', () => {
   expect(

@@ -1,15 +1,15 @@
 const fs = require('fs');
 const csv = require('csv-parser');
 
-const calculateMatchesPerYear = require('../server/1-matches-per-year.js');
-const calculateMatchesWonPerTeamPerYear = require('../server/2-matches-won-per-team-per-year.js');
-const calculateExtraRunsConcededIn2016 = require('../server/3-extra-runs-conceded-per-team-2016.js');
-const calculateTopEconomicalBowlersIn2015 = require('../server/4-top-10-economical-bowlers-2015.js');
-const calculateNoOfTimesTeamsWonTossandMatch = require('../server/5-no-of-times-teams-won-toss-n-match.js');
-const calculateHighestNoOfPOTMEachSsn = require('../server/6-highest-no-of-POTM-each-ssn.js');
-const calculateStrikeRateForABatsman = require('../server/7-striike-rate-of-a-batsman-per-ssn.js');
-const calculateMostDismissedPlayers = require('../server/8-highest-no-a-player-dismissed-by-another-player.js');
-const calculateBestEconomyInSuperOvers = require('../server/9-bowler-best-economy-in-super-overs.js');
+const calculateMatchesPerYear = require('./1-matches-per-year.js');
+const calculateMatchesWonPerTeamPerYear = require('./2-matches-won-per-team-per-year.js');
+const calculateExtraRunsConcededIn2016 = require('./3-extra-runs-conceded-per-team-2016.js');
+const calculateTopEconomicalBowlersIn2015 = require('./4-top-10-economical-bowlers-2015.js');
+const calculateNoOfTimesTeamsWonTossandMatch = require('./5-no-of-times-teams-won-toss-n-match.js');
+const calculateHighestNoOfPOTMEachSsn = require('./6-highest-no-of-POTM-each-ssn.js');
+const calculateStrikeRateForABatsman = require('./7-striike-rate-of-a-batsman-per-ssn.js');
+const calculateMostDismissedPlayers = require('./8-highest-no-a-player-dismissed-by-another-player.js');
+const calculateBestEconomyInSuperOvers = require('./9-bowler-best-economy-in-super-overs.js');
 
 const matchFilePath = '../data/matches.csv';
 const deliveriesFilePath = '../data/deliveries.csv';

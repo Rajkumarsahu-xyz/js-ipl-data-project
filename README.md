@@ -37,7 +37,7 @@ package-lock.json
 
 **Clone the repo from GitHub**  
 ```bash
-https://github.com/Rajkumarsahu-xyz/js-ipl-data-project.git
+git clone https://github.com/Rajkumarsahu-xyz/js-ipl-data-project.git
 ```
 
 **cd to the js-ipl-data-project directory**

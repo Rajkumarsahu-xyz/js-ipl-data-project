@@ -225,7 +225,7 @@ fetch('../public/output/7-strikeRateOfABatsmanPerSsn.json')
         type: 'column',
       },
       title: {
-        text: 'Strike Rate of a Batsman for each season',
+        text: 'Strike Rate of MS Dhoni for each season',
       },
       xAxis: {
         categories: Object.keys(data),

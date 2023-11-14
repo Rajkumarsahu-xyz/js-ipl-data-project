@@ -35,32 +35,36 @@ package-lock.json
 
 ## Getting Started  
 
-**1. Clone the repo from GitHub**  
+**### 1. Clone the repo from GitHub**  
 ```bash
 https://github.com/Rajkumarsahu-xyz/js-ipl-data-project.git
 ```
 
-**2. cd to the js-ipl-data-project directory**
+**### 2. cd to the js-ipl-data-project directory**
 ```bash
 cd js-ipl-data-project
 ```
 
-**3. Install npm packages and modules**
+**### 3. Install npm packages and modules**
 ```bash
 npm install
 ```
 To install and configure ESLint, Husky and Prettier, follow this [link](https://dev.to/ruppysuppy/automatically-format-your-code-on-git-commit-using-husky-eslint-prettier-in-9-minutes-45eg).
 
-**4. Usage**
+**### 4. Usage**
 ```bash
 cd src/public
 node index.js
 ```
 This will run all the 9 files at **server** directory and store the results in the ```.json``` files at the **public/output** directory.
 
-**5. Testing**  
+**### 5. Testing**  
 Run ```npm test``` to check if all the test cases are passed. You can also give your test cases at ```.test.js``` files in **__test__** directory. This is implemented using ```jest```.
 
-**6. Visualisation through Charts**  
-Go to the src/public directory ```cd src/public``` and run the index.html using **live server**. You can install live server extension on VS Code. This extension helps to launch a development local Server with live reload feature for static & dynamic pages.  
+**### 6. Visualisation through Charts**  
+**With Live Server**  
+Go to the src/public directory ```cd src/public``` and run the index.html using ```live server```. You can install live server extension on VS Code. This extension helps to launch a development local Server with live reload feature for static & dynamic pages.  
+**Without Live Server**  
+If you have Python 3 installed, you can start a simple HTTP server using the following command on the terminal: ```python3 -m http.server```. Open your web browser and go to this url ```http://0.0.0.0:8000/```. Now from here you can go to ```src/public```.  
+
 You can see all the charts being visualised on the browser corresponding to the data in the JSON files. This feature has been implemented using JavaScript Charting library [highcharts](https://www.highcharts.com/blog/download/).

@@ -17,8 +17,7 @@ function calculateTopEconomicalBowlersIn2015(matches, deliveries) {
       const extras = parseInt(delivery.extra_runs, 10);
       const wide = parseInt(delivery.wide_runs, 10);
       const noball = parseInt(delivery.noball_runs, 10);
-      const totalRuns =
-        parseInt(delivery.total_runs, 10) - extras + wide + noball;
+      const totalRuns = parseInt(delivery.total_runs, 10) - extras + wide + noball;
       const isWide = delivery.wide_runs !== '0';
       const isNoBall = delivery.noball_runs !== '0';
 
